@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="base-information" extends="struts-default"
+		namespace="/">
+		
+		<!-- 登录 -->
+		<action name="login" class="com.llx.ocsys.action.LoginAction" method="loginMethod">
+			<result name="success">/index.jsp</result>
+			<result name="input">/login.jsp</result>
+			<result name="error">/login.jsp</result>
+		</action>
+		
+		<!-- 退出 -->
+		<action name="logout" class="com.llx.ocsys.action.LoginAction" method="logoutMethod">
+			<result name="success">/login.jsp</result>
+		</action>
+		
+		<!-- 验证码 -->
+		<action name="SecurityCodeImageAction"  class="com.llx.ocsys.action.SecurityCodeImageAction">
+        	<result name="success" type="stream">
+            	<param name="contentType">image/jpeg</param>
+            	<param name="inputName">imageStream</param>
+            	<param name="bufferSize">2048</param>
+        	</result>
+    	</action>
+		
+		<!-- 显示药物信息 -->
+		<action name="show_drug_information" class="com.llx.ocsys.action.InformationAction"
+			method="showDurgInformation">
+			<result name="success">/jsp/base-information/drug_information.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+			<!-- <result name="input">/jsp/base-information/drug_information.jsp </result> -->
+		</action>
+		<!-- 添加药物信息 -->
+		<action name="add_drug_information" class="com.llx.ocsys.action.InformationAction"
+			method="addDurgInformation">
+			<result name="success" type="redirectAction">show_drug_information
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 修改药物价格 -->
+		<action name="mod_drug_pirce" class="com.llx.ocsys.action.InformationAction"
+			method="updateDurgInformation">
+			<result name="success" type="redirectAction">show_drug_information
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+
+		<!-- 显示检查项信息 -->
+		<action name="show_checkitem_information" class="com.llx.ocsys.action.InformationAction"
+			method="showCheckItemInformation">
+			<result name="success">/jsp/base-information/checkitem_information.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+			<!-- <result name="input">/jsp/base-information/drug_information.jsp </result> -->
+		</action>
+		<!-- 添加检查项信息 -->
+		<action name="add_checkitem_information" class="com.llx.ocsys.action.InformationAction"
+			method="addCheckItemInformation">
+			<result name="success" type="redirectAction">show_checkitem_information
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 修改检查项价格 -->
+		<action name="mod_checkitem_pirce" class="com.llx.ocsys.action.InformationAction"
+			method="updateCheckItemInformation">
+			<result name="success" type="redirectAction">show_checkitem_information
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+
+	</package>
+
+	<package name="charge-management" extends="struts-default"
+		namespace="/">
+		<!-- 办理挂号 -->
+		<action name="manage_regist" class="com.llx.ocsys.action.ChargeAction"
+			method="manageRegistration">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="token" />
+			<result name="invalid.token">/jsp/charge-management/manage_registration.jsp
+			</result>
+			<result name="success">/jsp/charge-management/manage_registration.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+
+		<!-- 显示挂号单信息 -->
+		<action name="show_registration_information" class="com.llx.ocsys.action.ChargeAction"
+			method="showRegistrationInformation">
+			<result name="success">/jsp/charge-management/medical_charge.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+
+		<!-- 浏览未结算处方单 -->
+		<action name="browse_registration_information" class="com.llx.ocsys.action.ChargeAction"
+			method="browseRegistrationInformation">
+			<result name="success">/jsp/charge-management/bills_detail_edit_charge.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 办理结算 -->
+		<action name="medical_charge" class="com.llx.ocsys.action.ChargeAction"
+			method="medicalCharge">
+			<result name="success">/jsp/charge-management/bills_detail_edit_charge.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 办理结算-添加临时用药 -->
+		<action name="add_temp_drug" class="com.llx.ocsys.action.ChargeAction"
+			method="addTempDurg">
+			<result name="success" type="redirectAction">medical_charge</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 办理结算-添加临时检查项 -->
+		<action name="add_temp_checkitem" class="com.llx.ocsys.action.ChargeAction"
+			method="addTempCheckitem">
+			<result name="success" type="redirectAction">medical_charge</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 完成结算 -->
+		<action name="finish_charge" class="com.llx.ocsys.action.ChargeAction"
+			method="finishCharge">
+			<result name="success" type="redirectAction">show_registration_information
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+
+		<!-- 显示成功结算的发票信息 -->
+		<action name="show_bills_information" class="com.llx.ocsys.action.ChargeAction"
+			method="showBillsInformation">
+			<result name="success">/jsp/charge-management/medical_refund.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+
+		<!-- 浏览已结算处方单 -->
+		<action name="browse_bills_information" class="com.llx.ocsys.action.ChargeAction"
+			method="browseBillsInformation">
+			<result name="success">
+				/jsp/charge-management/bills_detail_edit_refund.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 办理退款 -->
+		<action name="medical_refund" class="com.llx.ocsys.action.ChargeAction"
+			method="medicalRefund">
+			<result name="success">/jsp/charge-management/bills_detail_edit_refund.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 办理退款-添加临时用药 -->
+		<action name="add_used_drug" class="com.llx.ocsys.action.ChargeAction"
+			method="addUsedDurg">
+			<!-- <interceptor-ref name="defaultStack" /> -->
+			<!-- <interceptor-ref name="token" /> -->
+			<!-- <result name="invalid.token">/jsp/charge-management/bills_detail_edit_refund.jsp</result> -->
+			<result name="success">/jsp/charge-management/bills_detail_edit_refund.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 办理退款-添加临时检查项 -->
+		<action name="add_used_checkitem" class="com.llx.ocsys.action.ChargeAction"
+			method="addUsedCheckitem">
+			<!-- <interceptor-ref name="defaultStack" /> -->
+			<!-- <interceptor-ref name="token" /> -->
+			<!-- <result name="invalid.token">/jsp/charge-management/bills_detail_edit_refund.jsp</result> -->
+			<result name="success">/jsp/charge-management/bills_detail_edit_refund.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 完成退款 -->
+		<action name="finish_refund" class="com.llx.ocsys.action.ChargeAction"
+			method="finishRefund">
+			<result name="success" type="redirectAction">show_bills_information</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 全额退款 -->
+		<action name="refund_in_full" class="com.llx.ocsys.action.ChargeAction"
+			method="refundInFull">
+			<result name="success" type="redirectAction">show_bills_information</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 收费日结 -->
+		<action name="settle_account" class="com.llx.ocsys.action.AccountAction"
+			method="settleAccount">
+			<result name="success">/jsp/charge-management/settle_account.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+
+	</package>
+
+	<package name="query-statistics" extends="struts-default">
+		<!-- 显示药物信息 -->
+		<action name="show_drug" class="com.llx.ocsys.action.StatisticsAction"
+			method="showDurgInformation">
+			<result name="success">/jsp/query-statistics/drug_statistics.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+			<!-- <result name="input">/jsp/base-information/drug_information.jsp </result> -->
+		</action>
+		<!-- 多条件查询药品信息 -->
+		<action name="search_drug" class="com.llx.ocsys.action.StatisticsAction" method="searchDrugInformation">
+			<result name="success">/jsp/query-statistics/drug_statistics.jsp</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 显示检查项信息 -->
+		<action name="show_checkitem" class="com.llx.ocsys.action.StatisticsAction"
+			method="showCheckItemInformation">
+			<result name="success">/jsp/query-statistics/checkitem_statistics.jsp
+			</result>
+			<result name="error">/jsp/error/error.jsp</result>
+			<!-- <result name="input">/jsp/base-information/drug_information.jsp </result> -->
+		</action>
+		<!-- 多条件查询检查项信息 -->
+		<action name="search_checkItem" class="com.llx.ocsys.action.StatisticsAction" method="searchCheckItemInformation">
+			<result name="success">/jsp/query-statistics/checkitem_statistics.jsp</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<!-- 显示挂号单信息 -->
+		<action name="show_registration" class="com.llx.ocsys.action.StatisticsAction" method="showRegistration">
+			<result name="success">/jsp/query-statistics/registration_statistics.jsp</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+		<action name="search_registration" class="com.llx.ocsys.action.StatisticsAction" method="searchRegistration">
+			<result name="success">/jsp/query-statistics/registration_statistics.jsp</result>
+			<result name="error">/jsp/error/error.jsp</result>
+		</action>
+
+	</package>
+
+</struts>    
